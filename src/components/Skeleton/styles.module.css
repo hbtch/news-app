@@ -1,0 +1,27 @@
+.list {
+    display: flex;
+    flex-direction: column;
+}
+.banner {
+    width: 100%;
+    padding-top: 100%;
+    position: relative;
+}
+.banner, 
+.item {
+    animation: pulse 1.5s infinite ease-in-out
+}
+@keyframes pulse {
+    0% {
+        background-color: #e0e0e0;
+        transform: scale(1);
+    }
+    50% {
+        background-color: #d0d0d0; /* Цвет на пике анимации */
+        transform: scale(1.05); /* Увеличение элемента */
+    }
+    100% {
+        background-color: #e0e0e0;
+        transform: scale(1);
+    }
+}
