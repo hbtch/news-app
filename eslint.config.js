@@ -1,38 +1,39 @@
-import js from '@eslint/js'
-import globals from 'globals'
-import react from 'eslint-plugin-react'
-import reactHooks from 'eslint-plugin-react-hooks'
-import reactRefresh from 'eslint-plugin-react-refresh'
+import globals from "globals";
+import pluginJs from "@eslint/js";
+import tseslint from "typescript-eslint";
+import pluginReact from "eslint-plugin-react";
+import pluginPrettier from "eslint-plugin-prettier"; // Импортируем плагин Prettier
+import configPrettier from "eslint-config-prettier"; // Импортируем конфигурацию Prettier
 
 export default [
   {
-    files: ['**/*.{js,jsx}'],
-    ignores: ['dist'],
+    files: ["**/*.{js,mjs,cjs,ts,jsx,tsx}"],
     languageOptions: {
-      ecmaVersion: 2020,
       globals: globals.browser,
       parserOptions: {
-        ecmaVersion: 'latest',
-        ecmaFeatures: { jsx: true },
-        sourceType: 'module',
+        ecmaVersion: 2021,
+        sourceType: "module",
+        ecmaFeatures: {
+          jsx: true, // Включаем поддержку JSX
+        },
       },
     },
-    settings: { react: { version: '18.3' } },
     plugins: {
-      react,
-      'react-hooks': reactHooks,
-      'react-refresh': reactRefresh,
+      prettier: pluginPrettier, // Добавляем плагин Prettier
+      react: pluginReact, // Добавляем плагин React
     },
     rules: {
-      ...js.configs.recommended.rules,
-      ...react.configs.recommended.rules,
-      ...react.configs['jsx-runtime'].rules,
-      ...reactHooks.configs.recommended.rules,
-      'react/jsx-no-target-blank': 'off',
-      'react-refresh/only-export-components': [
-        'warn',
-        { allowConstantExport: true },
-      ],
+      "prettier/prettier": "error", // Ошибка при несоответствии форматированию Prettier
+      "react/prop-types": "off", // Отключаем правило prop-types (если используете TypeScript)
+    },
+    settings: {
+      react: {
+        version: "detect", // Автоматическое определение версии React
+      },
     },
   },
-]
+  pluginJs.configs.recommended,
+  ...tseslint.configs.recommended,
+  pluginReact.configs.flat.recommended,
+  configPrettier, // Добавляем конфигурацию Prettier
+];
